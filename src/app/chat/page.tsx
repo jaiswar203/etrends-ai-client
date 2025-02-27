@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { Send, Bot, User } from 'lucide-react'
 import { ThreeDots } from 'react-loader-spinner'
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useAgentChatMutation } from "@/api"
-import Markdown from 'react-markdown'
+import MarkdownDisplay from "@/components/ui/markdown-display"
 
 interface Message {
     id: string
@@ -22,6 +22,7 @@ export default function ChatInterface() {
     const [input, setInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [threadId, setThreadId] = useState<string>('')
+    const messagesEndRef = useRef<HTMLDivElement>(null)
 
     const { mutate: agentChat, isPending } = useAgentChatMutation()
 
@@ -30,6 +31,11 @@ export default function ChatInterface() {
         const newThreadId = uuidv4()
         setThreadId(newThreadId)
     }, [])
+
+    // Scroll to bottom whenever messages change or loading state changes
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages, isPending])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
@@ -104,7 +110,11 @@ export default function ChatInterface() {
                                         : 'bg-gray-200 text-gray-800'
                                         }`}
                                 >
-                                    <Markdown>{message.content}</Markdown>
+                                    {message.role === 'user' ? (
+                                        <p>{message.content}</p>
+                                    ) : (
+                                        <MarkdownDisplay content={message.content} />
+                                    )}
                                 </div>
                                 {message.role === 'user' && (
                                     <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
@@ -132,6 +142,7 @@ export default function ChatInterface() {
                                 </div>
                             </div>
                         )}
+                        <div ref={messagesEndRef} />
                     </ScrollArea>
                 </CardContent>
                 <CardFooter>

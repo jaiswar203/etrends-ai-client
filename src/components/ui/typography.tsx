@@ -19,7 +19,6 @@ const Typography: React.FC<TypographyProps> = ({ variant, children, className = 
         span: `text-sm font-normal  ${baseStyles}`,
     };
 
-    // Fix: Use a more compatible approach for dynamic elements
     const Component = React.createElement(variant, {
         className: `${styles[variant]} ${className}`,
         children

@@ -14,20 +14,20 @@ import Typography from "../ui/typography"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Text, NotepadText, MessageSquare } from "lucide-react"
+import { Text, MessageSquare } from 'lucide-react'
 
 // Menu items.
 const items = [
     {
-        title: "Summary Generator",
-        url: "summary-generator",
+        title: "Report Generator",
+        url: "report",
         icon: Text
     },
-    {
-        title: "Audit Report Generator",
-        url: "summary-generator",
-        icon: NotepadText
-    },
+    // {
+    //     title: "Audit Report Generator",
+    //     url: "summary-generator",
+    //     icon: NotepadText
+    // },
     {
         title: "QNA Chat",
         url: "chat",
