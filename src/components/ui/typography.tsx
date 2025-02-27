@@ -19,13 +19,13 @@ const Typography: React.FC<TypographyProps> = ({ variant, children, className = 
         span: `text-sm font-normal  ${baseStyles}`,
     };
 
-    // Fix: Use a more compatible approach for dynamic elements
-    const Component = React.createElement(variant, {
-        className: `${styles[variant]} ${className}`,
-        children
-    });
+    const Tag = variant as keyof JSX.IntrinsicElements;
 
-    return Component;
+    return (
+        <Tag className={`${styles[variant]} ${className}`}>
+            {children}
+        </Tag>
+    );
 };
 
 export default Typography;
