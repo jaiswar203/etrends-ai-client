@@ -60,7 +60,7 @@ const MarkdownDisplay: React.FC<MarkdownDisplayProps> = ({ content, className })
             const isInline = !match
             
             return isInline ? (
-              <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm" {...props}>
+              <code className="bg-gray-400 dark:bg-gray-800 px-1 py-0.5 rounded text-sm" {...props}>
                 {children}
               </code>
             ) : (
