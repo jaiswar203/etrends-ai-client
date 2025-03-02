@@ -25,7 +25,19 @@ interface Message {
   id: string
   content: string
   role: 'user' | 'assistant'
+  pdf?: string
 }
+
+// Add preset report options
+const presetReports = [
+  "Audit status overview",
+  "Business unit wise audit report",
+  "Location wise audit report",
+  "Critical Concerns report",
+  "Audit timeline report",
+  "Completion status report",
+  "Auditor workload report"
+]
 
 export default function ReportGenerator() {
   const [messages, setMessages] = useState<Message[]>([])
@@ -39,6 +51,9 @@ export default function ReportGenerator() {
 
   const { mutate: generateReport, isPending } = useAuditReportGeneratorMutation()
   const { data: reportsData, isLoading: isLoadingReports, refetch: refetchReports } = useGetAllReportsQuery()
+
+  // Add new state for preset dialog
+  const [presetDialogOpen, setPresetDialogOpen] = useState(false)
 
   // Initialize threadId on component mount
   useEffect(() => {
@@ -99,7 +114,8 @@ export default function ReportGenerator() {
             // Add assistant message
             const assistantMessage: Message = {
               id: (Date.now() + 1).toString(),
-              content: response.data,
+              content: response.data.content,
+              pdf: response.data.pdf,
               role: 'assistant'
             }
             setMessages(prev => [...prev, assistantMessage])
@@ -143,7 +159,8 @@ export default function ReportGenerator() {
             // Add assistant message
             const assistantMessage: Message = {
               id: (Date.now() + 1).toString(),
-              content: response.data,
+              content: response.data.content,
+              pdf: response.data.pdf,
               role: 'assistant'
             }
             setMessages(prev => [...prev, assistantMessage])
@@ -159,6 +176,32 @@ export default function ReportGenerator() {
     }
   }
 
+  const handlePresetSelect = (preset: string) => {
+    setReportDescription(preset)
+    setPresetDialogOpen(false)
+    setModalOpen(true)
+  }
+
+  // Add component for displaying preset reports
+  const PresetReportsList = () => (
+    <div className="w-full max-w-3xl mx-auto">
+      <h2 className="text-xl font-semibold mb-4 text-center">Select a report type</h2>
+      <div className="bg-card rounded-lg shadow-sm p-4 border">
+        <div className="grid gap-2">
+          {presetReports.map((report, index) => (
+            <button
+              key={index}
+              className="text-left p-2 hover:bg-accent rounded-md transition-colors text-sm bg-gray-100"
+              onClick={() => handlePresetSelect(report)}
+            >
+              {report}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <>
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
@@ -167,6 +210,7 @@ export default function ReportGenerator() {
             <DialogTitle>Generate Audit Report</DialogTitle>
             <DialogDescription>
               Please describe what type of report you want to generate.
+              Note: Report generation may take 2-3 minutes to complete.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -179,6 +223,32 @@ export default function ReportGenerator() {
                 placeholder="E.g., Generate a security audit report for a web application with user authentication and payment processing..."
                 className="min-h-[120px]"
               />
+              
+              {/* Add preset buttons */}
+              <div className="mt-3">
+                <Label className="mb-2 block">Quick Select:</Label>
+                <div className="flex flex-wrap gap-2">
+                  {presetReports.slice(0, 3).map((preset, index) => (
+                    <Button 
+                      key={index} 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setReportDescription(preset)}
+                      className="text-xs"
+                    >
+                      {preset}
+                    </Button>
+                  ))}
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setPresetDialogOpen(true)}
+                    className="text-xs"
+                  >
+                    More options...
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
           <DialogFooter>
@@ -186,6 +256,21 @@ export default function ReportGenerator() {
               Generate Report
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add new dialog for preset reports */}
+      <Dialog open={presetDialogOpen} onOpenChange={setPresetDialogOpen}>
+        <DialogContent className="sm:max-w-[700px]">
+          <DialogHeader>
+            <DialogTitle>Select Report Type</DialogTitle>
+            <DialogDescription>
+              Choose from our preset report templates or create a custom report.
+            </DialogDescription>
+          </DialogHeader>
+          <ScrollArea className="h-[400px] pr-4">
+            <PresetReportsList />
+          </ScrollArea>
         </DialogContent>
       </Dialog>
 
@@ -267,7 +352,7 @@ export default function ReportGenerator() {
             <div className="flex space-x-2">
               <Button
                 variant="outline"
-                onClick={openPromptModal}
+                onClick={() => setPresetDialogOpen(true)}
                 className="flex items-center"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -306,7 +391,28 @@ export default function ReportGenerator() {
                       {message.role === 'user' ? (
                         <p>{message.content}</p>
                       ) : (
-                        <MarkdownDisplay content={message.content} />
+                        <div>
+                          <div className="flex space-x-2 mb-4">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs"
+                              onClick={() => window.open(message.pdf, '_blank')}
+                            >
+                              <ExternalLink className="h-4 w-4 mr-1" />
+                              View Report
+                            </Button>
+                            <a href={message.pdf} download>
+                              <Button variant="outline" size="sm" className="text-xs">
+                                <Download className="h-4 w-4 mr-1" />
+                                Download Report
+                              </Button>
+                            </a>
+                          </div>
+                          <div className="mt-2">
+                            <MarkdownDisplay content={message.content} />
+                          </div>
+                        </div>
                       )}
                     </div>
                     {message.role === 'user' && (
@@ -322,16 +428,19 @@ export default function ReportGenerator() {
                       <FileText className="w-5 h-5 text-white" />
                     </div>
                     <div className="bg-gray-200 p-4 rounded-lg">
-                      <ThreeDots
-                        visible={true}
-                        height="10"
-                        width="80"
-                        color="black"
-                        radius="9"
-                        ariaLabel="three-dots-loading"
-                        wrapperStyle={{}}
-                        wrapperClass=""
-                      />
+                      <div className="mb-2">
+                        <ThreeDots
+                          visible={true}
+                          height="10"
+                          width="80"
+                          color="black"
+                          radius="9"
+                          ariaLabel="three-dots-loading"
+                          wrapperStyle={{}}
+                          wrapperClass=""
+                        />
+                      </div>
+                      <p className="text-sm text-gray-600">Generating your report. This may take 2-3 minutes...</p>
                     </div>
                   </div>
                 )}
@@ -342,12 +451,18 @@ export default function ReportGenerator() {
                 <FileText className="h-16 w-16 text-gray-300 mb-4" />
                 <h3 className="text-xl font-medium text-gray-700 mb-2">No Reports Generated Yet</h3>
                 <p className="text-gray-500 mb-6 text-center max-w-md">
-                  Click the &quot;New Report&quot; button to describe what type of audit report you want to generate.
+                  Select a report type to generate or create a custom report.
                 </p>
-                <Button onClick={openPromptModal} className="flex items-center">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Generate Your First Report
-                </Button>
+                <div className="flex flex-col space-y-4 w-full max-w-md">
+                  <Button onClick={() => setPresetDialogOpen(true)} className="flex items-center justify-center">
+                    <List className="h-4 w-4 mr-2" />
+                    Select from Preset Reports
+                  </Button>
+                  <Button onClick={openPromptModal} variant="outline" className="flex items-center justify-center">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Custom Report
+                  </Button>
+                </div>
               </div>
             )}
           </CardContent>

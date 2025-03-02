@@ -29,7 +29,6 @@ export const useAgentChatMutation = () => {
   });
 };
 
-
 // Audit Report Generator
 
 interface AuditReportRequest {
@@ -43,7 +42,10 @@ const auditReportGenerator = async (data: AuditReportRequest) => {
 };
 
 export const useAuditReportGeneratorMutation = () => {
-  return useMutation<IResponse<string>, Error, AuditReportRequest>({
+  return useMutation<IResponse<{
+    content:string
+    pdf:string
+  }>, Error, AuditReportRequest>({
     mutationFn: auditReportGenerator,
     mutationKey: ["auditReportGenerator"],
   });
