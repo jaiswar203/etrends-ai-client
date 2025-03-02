@@ -138,7 +138,7 @@ export default function ChatInterface() {
         <div className="flex items-start justify-center p-4">
             <Card className="w-full max-w-full relative">
                 <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle className="text-2xl font-bold">AI RAG Chat</CardTitle>
+                    <CardTitle className="text-2xl font-bold">LASER AI</CardTitle>
                     {messages.length > 0 && (
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogTrigger asChild>

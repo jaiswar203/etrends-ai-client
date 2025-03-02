@@ -45,7 +45,7 @@ export function AppSidebar() {
     return (
         <Sidebar>
             <SidebarHeader>
-                <Image src="/images/logo.png" width={200} height={100} alt="logo" />
+                <Image src="/images/logo.jpg" width={250} height={100} alt="logo" />
             </SidebarHeader>
             <SidebarContent className="md:mt-4 p-2">
                 <SidebarMenu>
@@ -53,17 +53,17 @@ export function AppSidebar() {
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton
                                 asChild
-                                className="[&>svg]:size-5 !data-[active=true]:bg-black[data-active=true] group/item"
+                                className="[&>svg]:size-5 !data-[active=true]:bg-[#C42728] hover:bg-[#F5A846]/20 [data-active=true] group/item"
                                 isActive={isActive(item.url)}
                             >
                                 <Link href={`/${item.url}`} className="mb-2">
                                     <item.icon
                                         size={20}
-                                        className={`text-3xl ${isActive(item.url) ? "text-white" : "text-black"} group-hover/item:text-white`}
+                                        className={`text-3xl ${isActive(item.url) ? "text-white" : "text-[#C42728]"} group-hover/item:text-[#C42728]`}
                                     />
                                     <Typography
                                         variant="h4"
-                                        className={`font-normal ${isActive(item.url) ? "text-white font-medium" : ""} group-hover/item:text-white`}
+                                        className={`font-normal ${isActive(item.url) ? "text-white font-medium" : "text-[#C42728]"} group-hover/item:text-[#C42728]`}
                                     >
                                         {item.title}
                                     </Typography>

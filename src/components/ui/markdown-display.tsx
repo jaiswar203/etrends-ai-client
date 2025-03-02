@@ -14,6 +14,13 @@ interface MarkdownDisplayProps {
 }
 
 const MarkdownDisplay: React.FC<MarkdownDisplayProps> = ({ content, className }) => {
+  // Pre-process content to ensure proper list formatting
+  const processedContent = content
+    // Fix numbered lists that don't have a space after the period
+    .replace(/^(\d+)\.\s*(.+)$/gm, '$1. $2')
+    // Ensure there's a blank line before lists for proper parsing
+    .replace(/([^\n])\n([\d]+\.|\*|\-)/g, '$1\n\n$2');
+
   return (
     <div className={cn("markdown-content prose prose-sm max-w-none dark:prose-invert", className)}>
       <Markdown
@@ -81,7 +88,7 @@ const MarkdownDisplay: React.FC<MarkdownDisplayProps> = ({ content, className })
           },
         }}
       >
-        {content}
+        {processedContent}
       </Markdown>
     </div>
   )
