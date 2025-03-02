@@ -191,7 +191,7 @@ export default function ReportGenerator() {
           {presetReports.map((report, index) => (
             <button
               key={index}
-              className="text-left p-2 hover:bg-accent rounded-md transition-colors text-sm bg-gray-100"
+              className="text-left p-2 hover:bg-accent rounded-md transition-colors text-sm bg-gray-50"
               onClick={() => handlePresetSelect(report)}
             >
               {report}
@@ -252,7 +252,11 @@ export default function ReportGenerator() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={startReportGeneration} disabled={!reportDescription.trim()}>
+            <Button 
+              onClick={startReportGeneration} 
+              disabled={!reportDescription.trim()}
+              className="bg-[#E02727] hover:bg-[#C42728] text-white"
+            >
               Generate Report
             </Button>
           </DialogFooter>
@@ -346,14 +350,14 @@ export default function ReportGenerator() {
       </Dialog>
 
       <div className="flex items-start justify-center p-4">
-        <Card className="w-full max-w-full h-screen">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-2xl font-bold">Audit Report Generator</CardTitle>
+        <Card className="w-full max-w-full h-screen border-[#F5A846]/20">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-[#F5A846]/20 pb-4">
+            <CardTitle className="text-2xl font-bold text-[#C42728]">Audit Report Generator</CardTitle>
             <div className="flex space-x-2">
               <Button
                 variant="outline"
                 onClick={() => setPresetDialogOpen(true)}
-                className="flex items-center"
+                className="flex items-center border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8] hover:text-[#C42728]"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 New Report
@@ -361,7 +365,7 @@ export default function ReportGenerator() {
               <Button
                 variant="outline"
                 onClick={openReportsModal}
-                className="flex items-center"
+                className="flex items-center border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8] hover:text-[#C42728]"
               >
                 <List className="h-4 w-4 mr-2" />
                 View All Reports
@@ -378,32 +382,38 @@ export default function ReportGenerator() {
                       }`}
                   >
                     {message.role !== 'user' && (
-                      <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-[#C42728] flex items-center justify-center">
                         <FileText className="w-5 h-5 text-white" />
                       </div>
                     )}
                     <div
                       className={`max-w-[100%] p-3 rounded-lg ${message.role === 'user'
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200 text-gray-800'
+                        ? 'bg-[#E02727] text-white'
+                        : 'bg-[#FBE6B8] text-gray-800'
                         }`}
                     >
                       {message.role === 'user' ? (
+                        <>
                         <p>{message.content}</p>
+                        </>
                       ) : (
                         <div>
                           <div className="flex space-x-2 mb-4">
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="text-xs"
+                              className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
                               onClick={() => window.open(message.pdf, '_blank')}
                             >
                               <ExternalLink className="h-4 w-4 mr-1" />
                               View Report
                             </Button>
                             <a href={message.pdf} download>
-                              <Button variant="outline" size="sm" className="text-xs">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
+                              >
                                 <Download className="h-4 w-4 mr-1" />
                                 Download Report
                               </Button>
@@ -411,12 +421,35 @@ export default function ReportGenerator() {
                           </div>
                           <div className="mt-2">
                             <MarkdownDisplay content={message.content} />
+                            
+                            {/* Add buttons at the bottom of AI content */}
+                            <div className="flex space-x-2 mt-4 justify-end">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
+                                onClick={() => window.open(message.pdf, '_blank')}
+                              >
+                                <ExternalLink className="h-4 w-4 mr-1" />
+                                View Report
+                              </Button>
+                              <a href={message.pdf} download>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
+                                >
+                                  <Download className="h-4 w-4 mr-1" />
+                                  Download Report
+                                </Button>
+                              </a>
+                            </div>
                           </div>
                         </div>
                       )}
                     </div>
                     {message.role === 'user' && (
-                      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-[#F5A846] flex items-center justify-center">
                         <User className="w-5 h-5 text-white" />
                       </div>
                     )}
@@ -424,16 +457,16 @@ export default function ReportGenerator() {
                 ))}
                 {isPending && (
                   <div className="flex items-start space-x-2 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-[#C42728] flex items-center justify-center">
                       <FileText className="w-5 h-5 text-white" />
                     </div>
-                    <div className="bg-gray-200 p-4 rounded-lg">
+                    <div className="bg-[#FBE6B8] p-4 rounded-lg">
                       <div className="mb-2">
                         <ThreeDots
                           visible={true}
                           height="10"
                           width="80"
-                          color="black"
+                          color="#C42728"
                           radius="9"
                           ariaLabel="three-dots-loading"
                           wrapperStyle={{}}
@@ -448,17 +481,24 @@ export default function ReportGenerator() {
               </ScrollArea>
             ) : (
               <div className="flex flex-col items-center justify-center h-[80vh]">
-                <FileText className="h-16 w-16 text-gray-300 mb-4" />
-                <h3 className="text-xl font-medium text-gray-700 mb-2">No Reports Generated Yet</h3>
+                <FileText className="h-16 w-16 text-[#F5A846] mb-4" />
+                <h3 className="text-xl font-medium text-[#C42728] mb-2">No Reports Generated Yet</h3>
                 <p className="text-gray-500 mb-6 text-center max-w-md">
                   Select a report type to generate or create a custom report.
                 </p>
                 <div className="flex flex-col space-y-4 w-full max-w-md">
-                  <Button onClick={() => setPresetDialogOpen(true)} className="flex items-center justify-center">
+                  <Button 
+                    onClick={() => setPresetDialogOpen(true)} 
+                    className="flex items-center justify-center bg-[#E02727] hover:bg-[#C42728] text-white"
+                  >
                     <List className="h-4 w-4 mr-2" />
                     Select from Preset Reports
                   </Button>
-                  <Button onClick={openPromptModal} variant="outline" className="flex items-center justify-center">
+                  <Button 
+                    onClick={openPromptModal} 
+                    variant="outline" 
+                    className="flex items-center justify-center border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8] hover:text-[#C42728]"
+                  >
                     <Plus className="h-4 w-4 mr-2" />
                     Create Custom Report
                   </Button>
