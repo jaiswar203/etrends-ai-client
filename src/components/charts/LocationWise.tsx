@@ -9,7 +9,6 @@ import MarkdownDisplay from '@/components/ui/markdown-display'
 interface LocationWiseAuditsProps {
   data: LocationWiseAuditData[]
   loading: boolean
-  yearRange: { startYear: number; endYear: number }
 }
 
 export default function LocationWiseAudits({
