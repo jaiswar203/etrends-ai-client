@@ -22,11 +22,11 @@ interface Message {
 
 // Updated preset questions without categories
 const presetQuestions = [
-    "How many open observations?",
-    "How many repeat observations?",
+    "How many total open observations?",
+    "How many total repeat observations?",
     "Risk wise total observations?",
-    "How many observations breached?",
-    "How many not due observations?",
+    "How many total observations breached?",
+    "How many total not due observations?",
     "Location wise breached observations?",
     "Risk type wise breached observations?"
 ]
