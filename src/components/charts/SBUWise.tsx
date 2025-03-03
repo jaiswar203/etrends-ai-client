@@ -9,7 +9,6 @@ import MarkdownDisplay from '@/components/ui/markdown-display'
 interface SBUWiseAuditsProps {
   data: SBUWiseAuditData[]
   loading: boolean
-  yearRange: { startYear: number; endYear: number }
 }
 
 export default function SBUWiseAudits({

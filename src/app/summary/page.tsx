@@ -1,26 +1,16 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
 import LocationWiseAudits from '@/components/charts/LocationWise'
 import { useLocationWiseAuditsQuery, useSBUWiseAuditsQuery } from '@/api'
 import SBUWiseAudits from '@/components/charts/SBUWise'
 import Image from 'next/image'
 
 const SummaryPage = () => {
-    const [yearRange, setYearRange] = useState({
-        startYear: new Date().getFullYear() - 1,
-        endYear: new Date().getFullYear()
-    })
 
-    const { data, isLoading, isError } = useLocationWiseAuditsQuery({
-        startYear: yearRange.startYear,
-        endYear: yearRange.endYear
-    })
+    const { data, isLoading, isError } = useLocationWiseAuditsQuery()
 
-    const { data: sbuData, isLoading: sbuLoading, isError: sbuError } = useSBUWiseAuditsQuery({
-        startYear: yearRange.startYear,
-        endYear: yearRange.endYear
-    })
+    const { data: sbuData, isLoading: sbuLoading, isError: sbuError } = useSBUWiseAuditsQuery()
 
     return (
         <div className="container mx-auto p-4">
@@ -39,7 +29,6 @@ const SummaryPage = () => {
                         <LocationWiseAudits
                             data={data?.data || []}
                             loading={isLoading}
-                            yearRange={yearRange}
                         />
                     )}
                 </div>
@@ -53,7 +42,6 @@ const SummaryPage = () => {
                         <SBUWiseAudits
                             data={sbuData?.data || []}
                             loading={sbuLoading}
-                            yearRange={yearRange}
                         />
                     )}
                 </div>
