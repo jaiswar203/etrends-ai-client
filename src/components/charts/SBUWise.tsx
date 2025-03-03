@@ -78,7 +78,7 @@ export default function SBUWiseAudits({
 
   return (
     <div className="flex flex-col items-center w-full mt-8">
-      <div className="w-full bg-[#355c7d] text-white py-4 text-center text-2xl font-bold uppercase tracking-wider relative">
+      <div className="w-full bg-[#355c7d] text-white py-4 text-start text-2xl font-bold uppercase tracking-wider relative px-2">
         SBU-WISE
 
         <button
