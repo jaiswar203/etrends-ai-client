@@ -14,7 +14,7 @@ import Typography from "../ui/typography"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Text, MessageSquare } from 'lucide-react'
+import { Text, MessageSquare, NotepadText } from 'lucide-react'
 
 // Menu items.
 const items = [
@@ -23,11 +23,11 @@ const items = [
         url: "report",
         icon: Text
     },
-    // {
-    //     title: "Audit Report Generator",
-    //     url: "summary-generator",
-    //     icon: NotepadText
-    // },
+    {
+        title: "Summary Generator",
+        url: "summary",
+        icon: NotepadText
+    },
     {
         title: "QNA Chat",
         url: "chat",
@@ -45,7 +45,7 @@ export function AppSidebar() {
     return (
         <Sidebar>
             <SidebarHeader>
-                <Image src="/images/logo.jpg" width={250} height={100} alt="logo" />
+                <Image src="/images/logo.png" width={250} height={100} alt="logo" />
             </SidebarHeader>
             <SidebarContent className="md:mt-4 p-2">
                 <SidebarMenu>
