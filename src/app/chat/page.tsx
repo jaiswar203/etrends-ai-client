@@ -13,7 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { useAgentChatMutation } from "@/api"
 import MarkdownDisplay from "@/components/ui/markdown-display"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-
+import Image from "next/image"
 interface Message {
     id: string
     content: string
@@ -138,25 +138,28 @@ export default function ChatInterface() {
         <div className="flex items-start justify-center p-4">
             <Card className="w-full max-w-full relative">
                 <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle className="text-2xl font-bold">LASER AI</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-[#C42728] flex justify-start items-center gap-3">
+                        <Image src={"/images/small-logo.png"} width={30} height={30} alt='icon' />
+                        LASER AI
+                    </CardTitle>
                     {messages.length > 0 && (
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogTrigger asChild>
-                                <Button variant="outline" size="sm" className="flex items-center gap-1">
-                                    <ListFilter className="h-4 w-4" />
-                                    <span>Questions</span>
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                                <DialogHeader>
-                                    <DialogTitle>Select a Question</DialogTitle>
-                                </DialogHeader>
-                                <ScrollArea className="h-[60vh] pr-4">
-                                    <PresetQuestionsList />
-                                </ScrollArea>
-                            </DialogContent>
-                        </Dialog>
-                    )}
+                                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+                                        <ListFilter className="h-4 w-4" />
+                                        <span>Questions</span>
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                                    <DialogHeader>
+                                        <DialogTitle>Select a Question</DialogTitle>
+                                    </DialogHeader>
+                                    <ScrollArea className="h-[60vh] pr-4">
+                                        <PresetQuestionsList />
+                                    </ScrollArea>
+                                </DialogContent>
+                            </Dialog>
+                        )}
                 </CardHeader>
                 <CardContent>
                     <ScrollArea className="h-[60vh] pr-4" ref={scrollAreaRef}>

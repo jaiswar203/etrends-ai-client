@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import MarkdownDisplay from "@/components/ui/markdown-display"
 import { format } from 'date-fns'
+import Image from 'next/image'
 
 interface Message {
   id: string
@@ -223,15 +224,15 @@ export default function ReportGenerator() {
                 placeholder="E.g., Generate a security audit report for a web application with user authentication and payment processing..."
                 className="min-h-[120px]"
               />
-              
+
               {/* Add preset buttons */}
               <div className="mt-3">
                 <Label className="mb-2 block">Quick Select:</Label>
                 <div className="flex flex-wrap gap-2">
                   {presetReports.slice(0, 3).map((preset, index) => (
-                    <Button 
-                      key={index} 
-                      variant="outline" 
+                    <Button
+                      key={index}
+                      variant="outline"
                       size="sm"
                       onClick={() => setReportDescription(preset)}
                       className="text-xs"
@@ -239,8 +240,8 @@ export default function ReportGenerator() {
                       {preset}
                     </Button>
                   ))}
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => setPresetDialogOpen(true)}
                     className="text-xs"
@@ -252,8 +253,8 @@ export default function ReportGenerator() {
             </div>
           </div>
           <DialogFooter>
-            <Button 
-              onClick={startReportGeneration} 
+            <Button
+              onClick={startReportGeneration}
               disabled={!reportDescription.trim()}
               className="bg-[#E02727] hover:bg-[#C42728] text-white"
             >
@@ -352,7 +353,9 @@ export default function ReportGenerator() {
       <div className="flex items-start justify-center p-4">
         <Card className="w-full max-w-full h-screen border-[#F5A846]/20">
           <CardHeader className="flex flex-row items-center justify-between border-b border-[#F5A846]/20 pb-4">
-            <CardTitle className="text-2xl font-bold text-[#C42728]">Audit Report Generator</CardTitle>
+            <CardTitle className="text-2xl font-bold text-[#C42728] flex justify-start items-center gap-3">
+              <Image src={"/images/small-logo.png"} width={30} height={30} alt='icon' />
+              Audit Report Generator</CardTitle>
             <div className="flex space-x-2">
               <Button
                 variant="outline"
@@ -394,14 +397,14 @@ export default function ReportGenerator() {
                     >
                       {message.role === 'user' ? (
                         <>
-                        <p>{message.content}</p>
+                          <p>{message.content}</p>
                         </>
                       ) : (
                         <div>
                           <div className="flex space-x-2 mb-4">
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
+                            <Button
+                              variant="outline"
+                              size="sm"
                               className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
                               onClick={() => window.open(message.pdf, '_blank')}
                             >
@@ -409,9 +412,9 @@ export default function ReportGenerator() {
                               View Report
                             </Button>
                             <a href={message.pdf} download>
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
+                              <Button
+                                variant="outline"
+                                size="sm"
                                 className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
                               >
                                 <Download className="h-4 w-4 mr-1" />
@@ -421,12 +424,12 @@ export default function ReportGenerator() {
                           </div>
                           <div className="mt-2">
                             <MarkdownDisplay content={message.content} />
-                            
+
                             {/* Add buttons at the bottom of AI content */}
                             <div className="flex space-x-2 mt-4 justify-end">
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
+                              <Button
+                                variant="outline"
+                                size="sm"
                                 className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
                                 onClick={() => window.open(message.pdf, '_blank')}
                               >
@@ -434,9 +437,9 @@ export default function ReportGenerator() {
                                 View Report
                               </Button>
                               <a href={message.pdf} download>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
+                                <Button
+                                  variant="outline"
+                                  size="sm"
                                   className="text-xs border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8]"
                                 >
                                   <Download className="h-4 w-4 mr-1" />
@@ -487,16 +490,16 @@ export default function ReportGenerator() {
                   Select a report type to generate or create a custom report.
                 </p>
                 <div className="flex flex-col space-y-4 w-full max-w-md">
-                  <Button 
-                    onClick={() => setPresetDialogOpen(true)} 
+                  <Button
+                    onClick={() => setPresetDialogOpen(true)}
                     className="flex items-center justify-center bg-[#E02727] hover:bg-[#C42728] text-white"
                   >
                     <List className="h-4 w-4 mr-2" />
                     Select from Preset Reports
                   </Button>
-                  <Button 
-                    onClick={openPromptModal} 
-                    variant="outline" 
+                  <Button
+                    onClick={openPromptModal}
+                    variant="outline"
                     className="flex items-center justify-center border-[#F5A846] text-[#C42728] hover:bg-[#FBE6B8] hover:text-[#C42728]"
                   >
                     <Plus className="h-4 w-4 mr-2" />

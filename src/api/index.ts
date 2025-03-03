@@ -70,3 +70,103 @@ export const useGetAllReportsQuery = () => {
     queryFn: getAllReports,
   });
 };
+
+// Location Wise Audits
+
+interface LocationWiseAuditParams {
+  startYear?: number;
+  endYear?: number;
+}
+
+export interface LocationWiseAuditData {
+  location: string;
+  totalAudits: number;
+  trouble: number;
+  needsAttention: number;
+  onPlan: number;
+  completed: number;
+}
+
+const getLocationWiseAudits = async (params: LocationWiseAuditParams = {}) => {
+  const { startYear, endYear } = params;
+  const queryParams = new URLSearchParams();
+  
+  if (startYear) queryParams.append('startYear', startYear.toString());
+  if (endYear) queryParams.append('endYear', endYear.toString());
+  
+  const queryString = queryParams.toString();
+  const url = `/location-wise-audits${queryString ? `?${queryString}` : ''}`;
+  
+  const response = await apiClient.get(url);
+  return response.data;
+};
+
+export const useLocationWiseAuditsQuery = (params: LocationWiseAuditParams = {}) => {
+  return useQuery<IResponse<LocationWiseAuditData[]>, Error>({
+    queryKey: ['locationWiseAudits', params],
+    queryFn: () => getLocationWiseAudits(params),
+  });
+};
+
+// SBU Wise Audits
+
+interface SBUWiseAuditParams {
+  startYear?: number;
+  endYear?: number;
+}
+
+export interface SBUWiseAuditData {
+  sbu: string;
+  totalAudits: number;
+  trouble: number;
+  needsAttention: number;
+  onPlan: number;
+  completed: number;
+}
+
+const getSBUWiseAudits = async (params: SBUWiseAuditParams = {}) => {
+  const { startYear, endYear } = params;
+  const queryParams = new URLSearchParams();
+  
+  if (startYear) queryParams.append('startYear', startYear.toString());
+  if (endYear) queryParams.append('endYear', endYear.toString());
+  
+  const queryString = queryParams.toString();
+  const url = `/sbu-wise-audits${queryString ? `?${queryString}` : ''}`;
+  
+  const response = await apiClient.get(url);
+  return response.data;
+};
+
+export const useSBUWiseAuditsQuery = (params: SBUWiseAuditParams = {}) => {
+  return useQuery<IResponse<SBUWiseAuditData[]>, Error>({
+    queryKey: ['sbuWiseAudits', params],
+    queryFn: () => getSBUWiseAudits(params),
+  });
+};
+
+// Summary Generation APIs
+
+const generateLocationWiseSummary = async () => {
+  const response = await apiClient.post("/agents/summary/location");
+  return response.data;
+};
+
+export const useLocationWiseSummaryMutation = () => {
+  return useMutation<IResponse<string>, Error>({
+    mutationFn: generateLocationWiseSummary,
+    mutationKey: ["locationWiseSummary"],
+  });
+};
+
+const generateSBUWiseSummary = async () => {
+  const response = await apiClient.post("/agents/summary/sbu");
+  return response.data;
+};
+
+export const useSBUWiseSummaryMutation = () => {
+  return useMutation<IResponse<string>, Error>({
+    mutationFn: generateSBUWiseSummary,
+    mutationKey: ["sbuWiseSummary"],
+  });
+};
