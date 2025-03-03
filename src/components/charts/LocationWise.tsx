@@ -78,9 +78,8 @@ export default function LocationWiseAudits({
 
   return (
     <div className="flex flex-col items-center w-full">
-      <div className="w-full bg-[#6c5b7b] text-white py-4 text-center text-2xl font-bold uppercase tracking-wider relative">
+      <div className="w-full bg-[#6c5b7b] text-white py-4 text-start text-2xl font-bold uppercase tracking-wider relative px-2">
         LOCATION-WISE
-
         <button
           className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white text-xs px-2 py-1 rounded flex items-center transition-colors"
           onClick={handleGenerateSummary}
